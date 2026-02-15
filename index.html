@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Vendas Profissional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-50: #f0f9ff;
+  --primary-100: #e0f2fe;
+  --primary-200: #bae6fd;
+  --primary-300: #7dd3fc;
+  --primary-400: #38bdf8;
+  --primary-500: #0ea5e9;
+  --primary-600: #0284c7;
+  --primary-700: #0369a1;
+  --primary-800: #075985;
+  --primary-900: #0c4a6e;
+
+  --success-500: #10b981;
+  --success-600: #059669;
+  --error-500: #ef4444;
+  --error-600: #dc2626;
+
+  --neutral-50: #f9fafb;
+  --neutral-100: #f3f4f6;
+  --neutral-200: #e5e7eb;
+  --neutral-300: #d1d5db;
+  --neutral-400: #9ca3af;
+  --neutral-500: #6b7280;
+  --neutral-600: #4b5563;
+  --neutral-700: #374151;
+  --neutral-800: #1f2937;
+  --neutral-900: #111827;
+
+  --spacing: 8px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  color: var(--neutral-800);
+  background: linear-gradient(135deg, var(--neutral-50) 0%, var(--primary-50) 100%);
+  min-height: 100vh;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+#app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: calc(var(--spacing) * 3);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: calc(var(--spacing) * 4);
+  animation: slideDown 0.5s ease;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--neutral-900);
+  letter-spacing: -0.02em;
+}
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--spacing) * 2);
+  padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 3);
+  background: white;
+  border: 1px solid var(--neutral-200);
+  border-radius: var(--radius-lg);
+  font-weight: 500;
+  color: var(--neutral-700);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.theme-toggle:hover {
+  background: var(--neutral-50);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.theme-toggle:active {
+  transform: translateY(0);
+}
+
+.box {
+  background: white;
+  padding: calc(var(--spacing) * 3);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  margin-bottom: calc(var(--spacing) * 3);
+  border: 1px solid var(--neutral-100);
+  animation: fadeIn 0.5s ease;
+  transition: all 0.3s ease;
+}
+
+.box:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.box h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--neutral-900);
+  margin-bottom: calc(var(--spacing) * 2.5);
+  padding-bottom: calc(var(--spacing) * 2);
+  border-bottom: 2px solid var(--neutral-100);
+}
+
+.login-container {
+  max-width: 420px;
+  margin: calc(var(--spacing) * 10) auto;
+}
+
+.login-container .box {
+  padding: calc(var(--spacing) * 4);
+}
+
+.login-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto calc(var(--spacing) * 3);
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  box-shadow: var(--shadow-lg);
+}
+
+input, select {
+  width: 100%;
+  padding: calc(var(--spacing) * 1.5) calc(var(--spacing) * 2);
+  margin-bottom: calc(var(--spacing) * 2);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--neutral-200);
+  font-size: 15px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  background: white;
+  color: var(--neutral-800);
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-100);
+}
+
+input::placeholder {
+  color: var(--neutral-400);
+}
+
+.input-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--spacing) * 2);
+}
+
+button {
+  width: 100%;
+  padding: calc(var(--spacing) * 1.75) calc(var(--spacing) * 3);
+  background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+  margin-top: calc(var(--spacing) * 1);
+}
+
+button:hover {
+  background: linear-gradient(135deg, var(--primary-700), var(--primary-800));
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button.danger {
+  background: linear-gradient(135deg, var(--error-500), var(--error-600));
+}
+
+button.danger:hover {
+  background: linear-gradient(135deg, var(--error-600), var(--error-600));
+}
+
+button.secondary {
+  background: white;
+  color: var(--primary-600);
+  border: 1.5px solid var(--primary-200);
+}
+
+button.secondary:hover {
+  background: var(--primary-50);
+  border-color: var(--primary-300);
+}
+
+.button-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--spacing) * 2);
+  margin-top: calc(var(--spacing) * 2);
+}
+
+.sales-list {
+  margin-top: calc(var(--spacing) * 2);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.sale-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: calc(var(--spacing) * 2);
+  margin-bottom: calc(var(--spacing) * 1.5);
+  background: var(--neutral-50);
+  border-radius: var(--radius-sm);
+  border-left: 4px solid var(--primary-500);
+  transition: all 0.2s ease;
+  animation: slideIn 0.3s ease;
+}
+
+.sale-item:hover {
+  background: var(--primary-50);
+  transform: translateX(4px);
+}
+
+.sale-info {
+  flex: 1;
+}
+
+.sale-name {
+  font-weight: 600;
+  color: var(--neutral-900);
+  margin-bottom: 4px;
+}
+
+.sale-details {
+  font-size: 14px;
+  color: var(--neutral-600);
+}
+
+.sale-value {
+  font-weight: 700;
+  color: var(--primary-600);
+  font-size: 1.1rem;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: calc(var(--spacing) * 2);
+  margin: calc(var(--spacing) * 3) 0;
+}
+
+.summary-card {
+  padding: calc(var(--spacing) * 2.5);
+  background: linear-gradient(135deg, var(--neutral-50), white);
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--neutral-100);
+  transition: all 0.3s ease;
+}
+
+.summary-card:hover {
+  border-color: var(--primary-200);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.summary-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--neutral-600);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: calc(var(--spacing) * 1);
+}
+
+.summary-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--neutral-900);
+}
+
+.summary-card.profit .summary-value {
+  color: var(--success-600);
+}
+
+.summary-card.margin .summary-value {
+  color: var(--primary-600);
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: calc(var(--spacing) * 3);
+  margin-top: calc(var(--spacing) * 3);
+}
+
+.chart-container {
+  min-height: 320px;
+  padding: calc(var(--spacing) * 2);
+  background: white;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--neutral-100);
+}
+
+.empty-state {
+  text-align: center;
+  padding: calc(var(--spacing) * 6) calc(var(--spacing) * 3);
+  color: var(--neutral-500);
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: calc(var(--spacing) * 2);
+  opacity: 0.3;
+}
+
+body.dark {
+  background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%);
+  color: var(--neutral-100);
+}
+
+body.dark .header h1 {
+  color: white;
+}
+
+body.dark .box {
+  background: #1a1f2e;
+  border-color: #2d3748;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .box h3 {
+  color: white;
+  border-bottom-color: #2d3748;
+}
+
+body.dark .theme-toggle {
+  background: #1a1f2e;
+  border-color: #2d3748;
+  color: var(--neutral-200);
+}
+
+body.dark .theme-toggle:hover {
+  background: #252d3d;
+}
+
+body.dark input,
+body.dark select {
+  background: #0f1419;
+  border-color: #2d3748;
+  color: white;
+}
+
+body.dark input::placeholder {
+  color: var(--neutral-500);
+}
+
+body.dark .sale-item {
+  background: #0f1419;
+  border-left-color: var(--primary-400);
+}
+
+body.dark .sale-item:hover {
+  background: #1a2332;
+}
+
+body.dark .sale-name {
+  color: white;
+}
+
+body.dark .summary-card {
+  background: linear-gradient(135deg, #1a1f2e, #252d3d);
+  border-color: #2d3748;
+}
+
+body.dark .summary-value {
+  color: white;
+}
+
+body.dark .chart-container {
+  background: #1a1f2e;
+  border-color: #2d3748;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 768px) {
+  #app {
+    padding: calc(var(--spacing) * 2);
+  }
+
+  .header {
+    flex-direction: column;
+    gap: calc(var(--spacing) * 2);
+    text-align: center;
+  }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .input-group {
+    grid-template-columns: 1fr;
+  }
+
+  .button-group {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+class SalesSystem {
+  constructor() {
+    this.data = JSON.parse(localStorage.getItem('salesData') || '{}')
+    this.isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
+    this.theme = localStorage.getItem('theme') || 'light'
+    this.currentDay = new Date().toLocaleDateString('pt-BR')
+
+    this.init()
+  }
+
+  init() {
+    this.ensureTodayExists()
+    this.applyTheme()
+
+    if (this.isLoggedIn) {
+      this.renderApp()
+    } else {
+      this.renderLogin()
+    }
+  }
+
+  ensureTodayExists() {
+    if (!this.data[this.currentDay]) {
+      this.data[this.currentDay] = []
+      this.saveData()
+    }
+  }
+
+  saveData() {
+    localStorage.setItem('salesData', JSON.stringify(this.data))
+  }
+
+  applyTheme() {
+    document.body.className = this.theme === 'dark' ? 'dark' : ''
+  }
+
+  toggleTheme() {
+    this.theme = this.theme === 'light' ? 'dark' : 'light'
+    localStorage.setItem('theme', this.theme)
+    this.applyTheme()
+  }
+
+  renderLogin() {
+    const app = document.querySelector('#app')
+    app.innerHTML = `
+      <div class="login-container">
+        <div class="box">
+          <div class="login-icon">🔐</div>
+          <h3 style="text-align: center; border: none; padding: 0;">Sistema de Vendas</h3>
+          <p style="text-align: center; color: var(--neutral-600); margin-bottom: 24px;">Entre com sua senha para acessar</p>
+          <input
+            id="password"
+            type="password"
+            placeholder="Digite sua senha"
+            autocomplete="current-password"
+          />
+          <button id="loginBtn">Entrar</button>
+        </div>
+      </div>
+    `
+
+    const passwordInput = document.getElementById('password')
+    const loginBtn = document.getElementById('loginBtn')
+
+    const handleLogin = () => {
+      const password = passwordInput.value
+      if (password === '1234') {
+        this.isLoggedIn = true
+        localStorage.setItem('isLoggedIn', 'true')
+        this.renderApp()
+      } else {
+        passwordInput.value = ''
+        passwordInput.style.borderColor = 'var(--error-500)'
+        passwordInput.placeholder = 'Senha incorreta! Tente novamente'
+
+        setTimeout(() => {
+          passwordInput.style.borderColor = ''
+          passwordInput.placeholder = 'Digite sua senha'
+        }, 2000)
+      }
+    }
+
+    loginBtn.addEventListener('click', handleLogin)
+    passwordInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleLogin()
+    })
+  }
+
+  renderApp() {
+    const app = document.querySelector('#app')
+    app.innerHTML = `
+      <div class="header">
+        <h1>Sistema de Vendas Profissional</h1>
+        <button class="theme-toggle" id="themeToggle">
+          <span>${this.theme === 'light' ? '🌙' : '☀️'}</span>
+          <span>${this.theme === 'light' ? 'Modo Escuro' : 'Modo Claro'}</span>
+        </button>
+      </div>
+
+      <div class="box">
+        <h3>Registrar Venda</h3>
+        <input id="productName" placeholder="Nome do produto" />
+        <div class="input-group">
+          <input id="costPrice" type="number" step="0.01" placeholder="Preço de compra (R$)" />
+          <input id="salePrice" type="number" step="0.01" placeholder="Preço de venda (R$)" />
+        </div>
+        <input id="quantity" type="number" min="1" placeholder="Quantidade" />
+        <button id="addSaleBtn">Adicionar Venda</button>
+      </div>
+
+      <div class="box">
+        <h3>Vendas Registradas</h3>
+        <select id="daySelect"></select>
+        <div id="salesList" class="sales-list"></div>
+      </div>
+
+      <div class="box">
+        <h3>Resumo Financeiro</h3>
+        <div id="summary" class="summary-grid"></div>
+        <div class="button-group">
+          <button id="exportBtn" class="secondary">Exportar Relatório</button>
+          <button id="resetBtn" class="danger">Resetar Dia</button>
+        </div>
+      </div>
+
+      <div class="box">
+        <h3>Análise Visual</h3>
+        <div class="charts-grid">
+          <div id="chart1" class="chart-container"></div>
+          <div id="chart2" class="chart-container"></div>
+        </div>
+      </div>
+    `
+
+    this.attachEventListeners()
+    this.loadDayOptions()
+    this.loadDayData()
+  }
+
+  attachEventListeners() {
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      this.toggleTheme()
+      this.renderApp()
+    })
+
+    document.getElementById('addSaleBtn').addEventListener('click', () => {
+      this.addSale()
+    })
+
+    document.getElementById('daySelect').addEventListener('change', () => {
+      this.currentDay = document.getElementById('daySelect').value
+      this.loadDayData()
+    })
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      this.resetDay()
+    })
+
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      this.exportReport()
+    })
+
+    const inputs = ['productName', 'costPrice', 'salePrice', 'quantity']
+    inputs.forEach(id => {
+      document.getElementById(id).addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') this.addSale()
+      })
+    })
+  }
+
+  loadDayOptions() {
+    const select = document.getElementById('daySelect')
+    select.innerHTML = ''
+
+    const sortedDays = Object.keys(this.data).sort((a, b) => {
+      const dateA = a.split('/').reverse().join('')
+      const dateB = b.split('/').reverse().join('')
+      return dateB.localeCompare(dateA)
+    })
+
+    sortedDays.forEach(day => {
+      const option = document.createElement('option')
+      option.value = day
+      option.textContent = day === this.currentDay ? `${day} (Hoje)` : day
+      select.appendChild(option)
+    })
+
+    select.value = this.currentDay
+  }
+
+  addSale() {
+    const productName = document.getElementById('productName').value.trim()
+    const costPrice = parseFloat(document.getElementById('costPrice').value)
+    const salePrice = parseFloat(document.getElementById('salePrice').value)
+    const quantity = parseInt(document.getElementById('quantity').value)
+
+    if (!productName || isNaN(costPrice) || isNaN(salePrice) || isNaN(quantity) || quantity < 1) {
+      this.showNotification('Preencha todos os campos corretamente', 'error')
+      return
+    }
+
+    if (salePrice < costPrice) {
+      if (!confirm('O preço de venda é menor que o de compra. Continuar?')) {
+        return
+      }
+    }
+
+    this.data[this.currentDay].push({
+      productName,
+      costPrice,
+      salePrice,
+      quantity,
+      timestamp: new Date().toISOString()
+    })
+
+    this.saveData()
+    this.loadDayData()
+    this.clearForm()
+    this.showNotification('Venda registrada com sucesso!', 'success')
+  }
+
+  clearForm() {
+    document.getElementById('productName').value = ''
+    document.getElementById('costPrice').value = ''
+    document.getElementById('salePrice').value = ''
+    document.getElementById('quantity').value = ''
+    document.getElementById('productName').focus()
+  }
+
+  loadDayData() {
+    const sales = this.data[this.currentDay] || []
+    this.renderSalesList(sales)
+    this.renderSummary(sales)
+    this.renderCharts(sales)
+  }
+
+  renderSalesList(sales) {
+    const list = document.getElementById('salesList')
+
+    if (sales.length === 0) {
+      list.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📦</div>
+          <p>Nenhuma venda registrada neste dia</p>
+        </div>
+      `
+      return
+    }
+
+    list.innerHTML = sales.map((sale, index) => {
+      const totalSale = sale.salePrice * sale.quantity
+      const totalCost = sale.costPrice * sale.quantity
+      const profit = totalSale - totalCost
+      const profitColor = profit >= 0 ? 'var(--success-600)' : 'var(--error-600)'
+
+      return `
+        <div class="sale-item">
+          <div class="sale-info">
+            <div class="sale-name">${sale.productName}</div>
+            <div class="sale-details">
+              Qtd: ${sale.quantity} |
+              Custo: R$ ${sale.costPrice.toFixed(2)} |
+              Venda: R$ ${sale.salePrice.toFixed(2)} |
+              <span style="color: ${profitColor}; font-weight: 600;">
+                Lucro: R$ ${profit.toFixed(2)}
+              </span>
+            </div>
+          </div>
+          <div class="sale-value">R$ ${totalSale.toFixed(2)}</div>
+        </div>
+      `
+    }).join('')
+  }
+
+  renderSummary(sales) {
+    let totalRevenue = 0
+    let totalCost = 0
+    let totalProfit = 0
+
+    sales.forEach(sale => {
+      const revenue = sale.salePrice * sale.quantity
+      const cost = sale.costPrice * sale.quantity
+      totalRevenue += revenue
+      totalCost += cost
+      totalProfit += (revenue - cost)
+    })
+
+    const margin = totalCost > 0 ? (totalProfit / totalCost) * 100 : 0
+
+    const summary = document.getElementById('summary')
+    summary.innerHTML = `
+      <div class="summary-card">
+        <div class="summary-label">Total Vendido</div>
+        <div class="summary-value">R$ ${totalRevenue.toFixed(2)}</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">Total Investido</div>
+        <div class="summary-value">R$ ${totalCost.toFixed(2)}</div>
+      </div>
+      <div class="summary-card profit">
+        <div class="summary-label">Lucro Total</div>
+        <div class="summary-value">R$ ${totalProfit.toFixed(2)}</div>
+      </div>
+      <div class="summary-card margin">
+        <div class="summary-label">Margem</div>
+        <div class="summary-value">${margin.toFixed(1)}%</div>
+      </div>
+    `
+  }
+
+  renderCharts(sales) {
+    if (sales.length === 0) {
+      document.getElementById('chart1').innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📊</div>
+          <p>Adicione vendas para visualizar gráficos</p>
+        </div>
+      `
+      document.getElementById('chart2').innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">📈</div>
+          <p>Adicione vendas para visualizar análises</p>
+        </div>
+      `
+      return
+    }
+
+    let totalRevenue = 0
+    let totalCost = 0
+    let totalProfit = 0
+
+    sales.forEach(sale => {
+      const revenue = sale.salePrice * sale.quantity
+      const cost = sale.costPrice * sale.quantity
+      totalRevenue += revenue
+      totalCost += cost
+      totalProfit += (revenue - cost)
+    })
+
+    google.charts.load('current', { packages: ['corechart'] })
+
+    google.charts.setOnLoadCallback(() => {
+      const data1 = google.visualization.arrayToDataTable([
+        ['Categoria', 'Valor'],
+        ['Investimento', totalCost],
+        ['Lucro', totalProfit]
+      ])
+
+      const options1 = {
+        title: 'Distribuição: Investimento vs Lucro',
+        pieHole: 0.4,
+        colors: ['#0284c7', '#10b981'],
+        backgroundColor: 'transparent',
+        legend: { position: 'bottom' },
+        chartArea: { width: '90%', height: '75%' }
+      }
+
+      const chart1 = new google.visualization.PieChart(document.getElementById('chart1'))
+      chart1.draw(data1, options1)
+
+      const data2 = google.visualization.arrayToDataTable([
+        ['Métrica', 'Valor', { role: 'style' }],
+        ['Vendido', totalRevenue, '#0284c7'],
+        ['Custo', totalCost, '#ef4444'],
+        ['Lucro', totalProfit, '#10b981']
+      ])
+
+      const options2 = {
+        title: 'Visão Geral Financeira',
+        backgroundColor: 'transparent',
+        legend: { position: 'none' },
+        chartArea: { width: '80%', height: '70%' },
+        vAxis: { format: 'R$ #,##0.00' }
+      }
+
+      const chart2 = new google.visualization.ColumnChart(document.getElementById('chart2'))
+      chart2.draw(data2, options2)
+    })
+  }
+
+  resetDay() {
+    if (!confirm(`Deseja realmente resetar todas as vendas do dia ${this.currentDay}?`)) {
+      return
+    }
+
+    this.data[this.currentDay] = []
+    this.saveData()
+    this.loadDayData()
+    this.showNotification('Vendas do dia resetadas', 'success')
+  }
+
+  exportReport() {
+    const sales = this.data[this.currentDay] || []
+
+    let totalRevenue = 0
+    let totalCost = 0
+    let totalProfit = 0
+
+    let report = `RELATÓRIO DE VENDAS - ${this.currentDay}\n`
+    report += `${'='.repeat(60)}\n\n`
+
+    if (sales.length === 0) {
+      report += 'Nenhuma venda registrada neste dia.\n'
+    } else {
+      report += 'VENDAS DETALHADAS:\n\n'
+
+      sales.forEach((sale, index) => {
+        const revenue = sale.salePrice * sale.quantity
+        const cost = sale.costPrice * sale.quantity
+        const profit = revenue - cost
+
+        totalRevenue += revenue
+        totalCost += cost
+        totalProfit += profit
+
+        report += `${index + 1}. ${sale.productName}\n`
+        report += `   Quantidade: ${sale.quantity}\n`
+        report += `   Preço de Compra: R$ ${sale.costPrice.toFixed(2)}\n`
+        report += `   Preço de Venda: R$ ${sale.salePrice.toFixed(2)}\n`
+        report += `   Total Vendido: R$ ${revenue.toFixed(2)}\n`
+        report += `   Lucro: R$ ${profit.toFixed(2)}\n\n`
+      })
+
+      const margin = totalCost > 0 ? (totalProfit / totalCost) * 100 : 0
+
+      report += `${'='.repeat(60)}\n\n`
+      report += 'RESUMO FINANCEIRO:\n\n'
+      report += `Total Vendido: R$ ${totalRevenue.toFixed(2)}\n`
+      report += `Total Investido: R$ ${totalCost.toFixed(2)}\n`
+      report += `Lucro Total: R$ ${totalProfit.toFixed(2)}\n`
+      report += `Margem de Lucro: ${margin.toFixed(1)}%\n`
+    }
+
+    const blob = new Blob([report], { type: 'text/plain;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `relatorio_vendas_${this.currentDay.replace(/\//g, '-')}.txt`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+
+    this.showNotification('Relatório exportado com sucesso!', 'success')
+  }
+
+  showNotification(message, type = 'info') {
+    const existing = document.querySelector('.notification')
+    if (existing) existing.remove()
+
+    const notification = document.createElement('div')
+    notification.className = 'notification'
+    notification.textContent = message
+
+    const colors = {
+      success: 'var(--success-500)',
+      error: 'var(--error-500)',
+      info: 'var(--primary-500)'
+    }
+
+    Object.assign(notification.style, {
+      position: 'fixed',
+      top: '24px',
+      right: '24px',
+      padding: '16px 24px',
+      background: colors[type],
+      color: 'white',
+      borderRadius: '8px',
+      boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
+      zIndex: '10000',
+      fontWeight: '600',
+      animation: 'slideDown 0.3s ease',
+      maxWidth: '400px'
+    })
+
+    document.body.appendChild(notification)
+
+    setTimeout(() => {
+      notification.style.animation = 'fadeOut 0.3s ease'
+      setTimeout(() => notification.remove(), 300)
+    }, 3000)
+  }
+}
+
+new SalesSystem()
+  </script>
+</body>
+</html>
